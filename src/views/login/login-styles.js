@@ -69,7 +69,7 @@ export const LoginContainer = ({ onClick }) => {
     console.log('username', username);
     console.log('password', password);
     onClick({ username, password });
-  }, [username, password]);
+  }, [username, password, onClick]);
 
   return (
     <LoginBlock>
