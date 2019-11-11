@@ -5,6 +5,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Icon from '@material-ui/core/Icon';
+import Grid from '@material-ui/core/Grid';
+import StyledImg from '../../components/image';
+import { CardColumn } from '../../components/card';
 
 export const DashboardContainer = styled.div`
   width: 100%;
@@ -116,4 +119,104 @@ export const DashboardHeader = ({ user, onSearch }) => (
     <HeaderSearchbar onSearch={onSearch} />
     <HeaderInfo user={user} />
   </HeaderContainer>
+);
+
+const SectionHeader = styled.h1`
+  font-size: 2rem;
+  color: #4f4f4f;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  color: #4f4f4f;
+  margin-bottom: 15px;
+  font-weight: 500;
+`;
+
+const HalfSectionCardContainer = styled.div`
+  img {
+    max-height: 317px;
+  }
+`;
+
+const HalfSectionCardDescription = styled.p`
+  color: #acacac;
+  margin-top: 0;
+`;
+
+const HalfSectionAuthor = styled.p`
+  text-align: right;
+  margin-top: 0;
+
+  & > span {
+    font-weight: bold;
+    color: #4f4f4f;
+  }
+`;
+
+const HalfSectionCard = ({ src, title, description, author }) => {
+  return (
+    <HalfSectionCardContainer>
+      <StyledImg src="https://picsum.photos/id/237/536/317" alt="src" />
+      <SectionTitle>
+        Sample Title for Design Purposes {/* title */}
+      </SectionTitle>
+      <HalfSectionCardDescription>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed eveniet
+        cumque, harum, aspernatur, eaque quam enim aut voluptas placeat
+        inventore temporibus alias dicta iusto? Repudiandae labore eveniet nihil
+        qui est?{/* description */}
+      </HalfSectionCardDescription>
+      <HalfSectionAuthor>
+        By <span>Dio Brando {/* author */}</span>
+      </HalfSectionAuthor>
+    </HalfSectionCardContainer>
+  );
+};
+
+export const SectionFeaturedProjects = ({
+  src,
+  title,
+  description,
+  author,
+  children,
+}) => {
+  return (
+    <section>
+      <SectionHeader>Featured Projects</SectionHeader>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <HalfSectionCard
+            src={src}
+            title={title}
+            description={description}
+            author={author}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          {children}
+        </Grid>
+      </Grid>
+    </section>
+  );
+};
+
+export const SectionCategory = ({ category, data }) => (
+  <section style={{ marginBottom: '20px' }}>
+    <SectionHeader>{category}</SectionHeader>
+    <Grid container spacing={3}>
+      {data.map(d => (
+        <Grid item xs={4}>
+          <CardColumn
+            title={d.title}
+            description={d.description}
+            current={d.current}
+            goal={d.goal}
+            daysLeft={d.daysLeft}
+            src={d.src}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  </section>
 );
