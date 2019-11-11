@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
+import TextField from '../../components/input';
 import Button from '@material-ui/core/Button';
 
 const LoginBox = styled.div`
@@ -13,16 +13,6 @@ const LoginBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const StyledTextField = styled(TextField)`
-  & .Mui-focused {
-    color: #27ae60;
-  }
-
-  & .MuiInput-underline:after {
-    border-bottom: 2px solid #27ae60;
-  }
 `;
 
 const StyledLoginHeader = styled.h1`
@@ -75,13 +65,13 @@ export const LoginContainer = ({ onClick }) => {
     <LoginBlock>
       <LoginBox>
         <StyledLoginHeader>Smarty Seed</StyledLoginHeader>
-        <StyledTextField
+        <TextField
           label="Username"
           id="username"
           onChange={e => setUsername(e.target.value)}
           fullWidth={true}
         />
-        <StyledTextField
+        <TextField
           style={{ marginTop: '2rem' }}
           id="password"
           label="Password"
