@@ -1,8 +1,10 @@
 import { createSlice } from 'redux-starter-kit';
 
 const initialState = {
-  username: '',
-  type: -1,
+  email: '',
+  id: -1,
+  last_name: '',
+  first_name: '',
 };
 
 const userSlice = createSlice({
@@ -10,8 +12,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, { payload }) {
-      state.username = payload.user;
-      state.type = payload.type;
+      state.id = payload.id;
+      state.email = payload.email;
+      state.first_name = payload.first_name;
+      state.last_name = payload.last_name;
       return state;
     },
   },
@@ -25,10 +29,5 @@ export const { name: slice, actions, reducer } = userSlice;
  * @todo probably best to use simple _.get instead of createSelectors here
  * as createSelectors does memoization that we probably doesnt need here
  */
-
-const getUserType = state => state[slice].type;
-export const selectors = {
-  getUserType,
-};
 
 export default userSlice;

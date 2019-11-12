@@ -107,9 +107,20 @@ const GetStartedLink = styled.a`
   }
 `;
 
+const UserBadge = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #27ae60;
+`;
+
 const HeaderInfo = ({ user }) => (
   <div style={{ display: 'flex', alignItems: 'center' }}>
-    <GetStartedLink href="/login">Get Started</GetStartedLink>
+    {user ? (
+      <UserBadge />
+    ) : (
+      <GetStartedLink href="/login">Get Started</GetStartedLink>
+    )}
   </div>
 );
 
@@ -205,8 +216,8 @@ export const SectionCategory = ({ category, data }) => (
   <section style={{ marginBottom: '20px' }}>
     <SectionHeader>{category}</SectionHeader>
     <Grid container spacing={3}>
-      {data.map(d => (
-        <Grid item xs={4}>
+      {data.map((d, idx) => (
+        <Grid item xs={4} key={d.title + idx}>
           <CardColumn
             title={d.title}
             description={d.description}

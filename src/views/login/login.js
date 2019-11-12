@@ -13,13 +13,13 @@ const Login = () => {
   const onClick = async params => {
     setIsLoggingIn(true);
     try {
-      const data = await Api.login(params);
+      const { data } = await Api.login(params);
 
       setIsLoggingIn(false);
-      console.log('data', data);
-
-      // dispatch([loginActions.login(),]);
-      // navigate('/dashboard');
+      localStorage.setItem('access_token', data.access_token);
+      dispatch(loginActions.login());
+      dispatch(userActions.setUser(data.user));
+      navigate('/dashboard');
     } catch (error) {
       console.error(error);
       setIsLoggingIn(false);
