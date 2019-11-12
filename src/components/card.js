@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledImg from './image';
-import { numberWithCommas } from '../utils';
+import ProgressBar from './progress-bar';
+import { numberWithCommas, computePercent } from '../utils';
 
 const CardRowContainer = styled.div`
   display: flex;
   color: #4f4f4f;
   margin-bottom: 40px;
+  cursor: pointer;
 
   & > img {
     max-height: 82px;
@@ -47,11 +49,11 @@ const CardRowAuthor = styled.p`
   }
 `;
 
-export const CardRow = ({ src, title, current, goal, author }) => {
-  const percentage = current >= goal ? 100 : (current / goal) * 100;
+export const CardRow = ({ onClick, id, src, title, current, goal, author }) => {
+  const percentage = computePercent(current, goal);
   return (
-    <CardRowContainer>
-      <StyledImg src={src} alt="" />
+    <CardRowContainer onClick={() => onClick(id)}>
+      <StyledImg src={src} alt={title} />
       <CardRowContent>
         <CardRowTitle>{title}</CardRowTitle>
         <CardRowGoalContent>
@@ -90,30 +92,6 @@ const CardColumnGoal = styled.p`
   margin: 0 0 10px;
 `;
 
-const ProgressTrack = styled.div`
-  position: relative;
-  height: 6px;
-  width: 100%;
-  border-radius: 3px;
-  background-color: #e0e0e0;
-`;
-
-const ProgressCurrent = styled.div`
-  position: absolute;
-  border-radius: 3px;
-  width: ${props => props.percentage}%;
-  background-color: #27ae60;
-  top: 0;
-  left: 0;
-  bottom: 0;
-`;
-
-const CardColumnProgress = ({ percentage }) => (
-  <ProgressTrack>
-    <ProgressCurrent percentage={percentage} />
-  </ProgressTrack>
-);
-
 const CardColumnDays = styled.div`
   text-align: right;
   color: #acacac;
@@ -127,13 +105,15 @@ export const CardColumn = ({
   current,
   goal,
   daysLeft,
+  onClick,
+  id,
 }) => {
   // need formula of getting percentage
-  const percentage = current >= goal ? 100 : (current / goal) * 100;
+  const percentage = computePercent(current, goal);
 
   return (
-    <div>
-      <StyledImg style={{ maxHeight: '202px' }} src={src} alt="" />
+    <div style={{ cursor: 'pointer' }} onClick={() => onClick(id)}>
+      <StyledImg style={{ maxHeight: '202px' }} src={src} alt={title} />
       <div>
         <CardColumnTitle>{title}</CardColumnTitle>
         <CardColumnDesc>{description}</CardColumnDesc>
@@ -142,7 +122,7 @@ export const CardColumn = ({
             {numberWithCommas(current)} out of {numberWithCommas(goal)} raised
           </CardColumnGoal>
           <div>
-            <CardColumnProgress percentage={percentage} />
+            <ProgressBar percentage={percentage} />
           </div>
         </div>
         <CardColumnDays>{daysLeft} days left</CardColumnDays>

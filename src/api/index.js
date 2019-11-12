@@ -19,3 +19,8 @@ export const getAllProjects = async () => {
   const data = Request.get('/projects');
   return data;
 };
+
+export const getProject = async projectId => {
+  const data = Request.get(`/projects/${projectId}`);
+  return data;
+};

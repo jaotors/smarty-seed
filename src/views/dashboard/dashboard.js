@@ -2,12 +2,13 @@ import Container from '@material-ui/core/Container';
 import React, { useState, useEffect } from 'react';
 import {
   DashboardContainer,
-  DashboardHeader,
   SectionFeaturedProjects,
   SectionCategory,
 } from './dashboard-styles';
 import { getUser, getAllProjects } from '../../api';
 import { CardRow } from '../../components/card';
+import AppHeader from '../../components/header';
+import { navigate } from '@reach/router';
 
 export const categoryMap = data => {
   const categories = data
@@ -26,7 +27,14 @@ const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [categoriesProj, setCategoriesProj] = useState([]);
 
-  const onShowProject = projectId => {};
+  const onShowProject = projectId => {
+    if (projectId === undefined) return;
+    if (user && user.email) {
+      navigate(`/projects/${projectId}`);
+      return;
+    }
+    navigate('/login');
+  };
 
   useEffect(() => {
     (async () => {
@@ -43,7 +51,6 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
-        // const token = localStorage.getItem('access_token');
         const { data } = await getAllProjects();
         const transformedData = categoryMap(data);
         setCategoriesProj(transformedData);
@@ -56,14 +63,14 @@ const Dashboard = () => {
 
   return (
     <DashboardContainer>
-      <DashboardHeader user={user} />
+      <AppHeader user={user} />
       <Container style={{ paddingTop: '90px' }}>
-        <SectionFeaturedProjects data={projects[0]}>
+        <SectionFeaturedProjects onClick={onShowProject} data={projects[0]}>
           {projects
             .filter((_, idx) => idx < 4)
             .map((c, idx) => (
               <CardRow
-                project={c}
+                id={c.id}
                 onClick={onShowProject}
                 key={c.beneficiary + idx}
                 src={c.image_url}

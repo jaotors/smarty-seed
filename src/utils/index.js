@@ -1,6 +1,5 @@
-export function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
+export const numberWithCommas = x =>
+  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 export function formatDays(date) {
   const dateDeadline = new Date(date);
@@ -9,3 +8,6 @@ export function formatDays(date) {
 
   return Math.round(Math.abs((dateToday - dateDeadline) / day));
 }
+
+export const computePercent = (current, goal) =>
+  current >= goal ? 100 : (current / goal) * 100;
