@@ -12,7 +12,7 @@ const Routes = () => {
       <StylesProvider injectFirst>
         <Router>
           <Login path="/login" />
-          <Dashboard path="/dashboard" />
+          <Dashboard path="/" default />
         </Router>
       </StylesProvider>
     </>

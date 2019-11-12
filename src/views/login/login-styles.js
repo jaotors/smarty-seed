@@ -33,7 +33,7 @@ const StyledButton = styled(Button)`
   border-radius: 30px;
 `;
 
-const RegisterButton = styled(StyledButton)`
+const RegisterBtn = styled(StyledButton)`
   color: #27ae60;
   font-weight: 600;
 
@@ -51,24 +51,23 @@ const LoginBtn = styled(StyledButton)`
   }
 `;
 
-export const LoginContainer = ({ onClick }) => {
-  const [username, setUsername] = useState('');
+export const LoginContainer = ({ onClick, disabled }) => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onClickLogin = useCallback(() => {
-    console.log('username', username);
-    console.log('password', password);
-    onClick({ username, password });
-  }, [username, password, onClick]);
+    onClick({ email, password });
+  }, [email, password, onClick]);
 
   return (
     <LoginBlock>
       <LoginBox>
         <StyledLoginHeader>Smarty Seed</StyledLoginHeader>
         <TextField
-          label="Username"
-          id="username"
-          onChange={e => setUsername(e.target.value)}
+          label="Email"
+          id="Email"
+          type="email"
+          onChange={e => setEmail(e.target.value)}
           fullWidth={true}
         />
         <TextField
@@ -80,8 +79,12 @@ export const LoginContainer = ({ onClick }) => {
           fullWidth={true}
         />
         <LoginButtonContainer>
-          <RegisterButton onClick={onClickLogin}>Register</RegisterButton>
-          <LoginBtn onClick={onClickLogin}>Login</LoginBtn>
+          <RegisterBtn disabled={disabled} onClick={onClickLogin}>
+            Register
+          </RegisterBtn>
+          <LoginBtn disabled={disabled} onClick={onClickLogin}>
+            Login
+          </LoginBtn>
         </LoginButtonContainer>
       </LoginBox>
     </LoginBlock>

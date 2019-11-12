@@ -109,7 +109,7 @@ const GetStartedLink = styled.a`
 
 const HeaderInfo = ({ user }) => (
   <div style={{ display: 'flex', alignItems: 'center' }}>
-    <GetStartedLink href="#">Get Started</GetStartedLink>
+    <GetStartedLink href="/login">Get Started</GetStartedLink>
   </div>
 );
 
