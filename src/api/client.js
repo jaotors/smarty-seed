@@ -38,7 +38,6 @@ function createClient(
       });
     },
     post(endpoint, { query = {}, params = {}, ...options } = {}) {
-      console.log(JSON.stringify(params));
       return this.fetch(`${endpoint}${queryString(query)}`, {
         method: 'POST',
         body: JSON.stringify(params),
