@@ -47,31 +47,41 @@ const CardRowAuthor = styled.p`
   }
 `;
 
-export const CardRow = ({ src, title, percentage, goal, author }) => (
-  <CardRowContainer>
-    <StyledImg src={src} alt="" />
-    <CardRowContent>
-      <CardRowTitle>{title}</CardRowTitle>
-      <CardRowGoalContent>
-        <p>
-          <CardRowGoal>{percentage}</CardRowGoal> of {goal}
-        </p>
-        <CardRowAuthor>
-          By <span>{author}</span>
-        </CardRowAuthor>
-      </CardRowGoalContent>
-    </CardRowContent>
-  </CardRowContainer>
-);
+export const CardRow = ({ src, title, current, goal, author }) => {
+  const percentage = current >= goal ? 100 : (current / goal) * 100;
+  return (
+    <CardRowContainer>
+      <StyledImg src={src} alt="" />
+      <CardRowContent>
+        <CardRowTitle>{title}</CardRowTitle>
+        <CardRowGoalContent>
+          <p>
+            <CardRowGoal>{percentage}%</CardRowGoal> of {goal} php
+          </p>
+          <CardRowAuthor>
+            By <span>{author}</span>
+          </CardRowAuthor>
+        </CardRowGoalContent>
+      </CardRowContent>
+    </CardRowContainer>
+  );
+};
 
 const CardColumnTitle = styled.p`
   font-size: 1rem;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const CardColumnDesc = styled.p`
   color: #acacac;
   margin: 0 0 20px;
+  max-height: 100px;
+  min-height: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const CardColumnGoal = styled.p`
@@ -123,7 +133,7 @@ export const CardColumn = ({
 
   return (
     <div>
-      <StyledImg style={{ minHeight: '202px' }} src={src} alt="" />
+      <StyledImg style={{ maxHeight: '202px' }} src={src} alt="" />
       <div>
         <CardColumnTitle>{title}</CardColumnTitle>
         <CardColumnDesc>{description}</CardColumnDesc>

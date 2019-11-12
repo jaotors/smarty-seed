@@ -8,6 +8,7 @@ import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 import StyledImg from '../../components/image';
 import { CardColumn } from '../../components/card';
+import { formatDays } from '../../utils';
 
 export const DashboardContainer = styled.div`
   width: 100%;
@@ -116,7 +117,7 @@ const UserBadge = styled.div`
 
 const HeaderInfo = ({ user }) => (
   <div style={{ display: 'flex', alignItems: 'center' }}>
-    {user ? (
+    {user && user.email ? (
       <UserBadge />
     ) : (
       <GetStartedLink href="/login">Get Started</GetStartedLink>
@@ -165,43 +166,39 @@ const HalfSectionAuthor = styled.p`
   }
 `;
 
-const HalfSectionCard = ({ src, title, description, author }) => {
+const defaultDesc = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed eveniet
+cumque, harum, aspernatur, eaque quam enim aut voluptas placeat
+inventore temporibus alias dicta iusto? Repudiandae labore eveniet nihil
+qui est?`;
+const HalfSectionCard = ({
+  src = 'https://picsum.photos/id/237/536/317',
+  title = 'Sample Title for Design Purposes',
+  description = defaultDesc,
+  author = 'Dio Brando',
+}) => {
   return (
     <HalfSectionCardContainer>
-      <StyledImg src="https://picsum.photos/id/237/536/317" alt="src" />
-      <SectionTitle>
-        Sample Title for Design Purposes {/* title */}
-      </SectionTitle>
-      <HalfSectionCardDescription>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed eveniet
-        cumque, harum, aspernatur, eaque quam enim aut voluptas placeat
-        inventore temporibus alias dicta iusto? Repudiandae labore eveniet nihil
-        qui est?{/* description */}
-      </HalfSectionCardDescription>
+      <StyledImg src={src} alt="src" />
+      <SectionTitle>{title}</SectionTitle>
+      <HalfSectionCardDescription>{description}</HalfSectionCardDescription>
       <HalfSectionAuthor>
-        By <span>Dio Brando {/* author */}</span>
+        By <span>{author}</span>
       </HalfSectionAuthor>
     </HalfSectionCardContainer>
   );
 };
 
-export const SectionFeaturedProjects = ({
-  src,
-  title,
-  description,
-  author,
-  children,
-}) => {
+export const SectionFeaturedProjects = ({ children, data }) => {
   return (
     <section>
       <SectionHeader>Featured Projects</SectionHeader>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <HalfSectionCard
-            src={src}
-            title={title}
-            description={description}
-            author={author}
+            src={data && data.image_url}
+            title={data && data.title}
+            description={data && data.description}
+            author={data && data.beneficiary}
           />
         </Grid>
         <Grid item xs={6}>
@@ -212,22 +209,24 @@ export const SectionFeaturedProjects = ({
   );
 };
 
-export const SectionCategory = ({ category, data }) => (
-  <section style={{ marginBottom: '20px' }}>
-    <SectionHeader>{category}</SectionHeader>
-    <Grid container spacing={3}>
-      {data.map((d, idx) => (
-        <Grid item xs={4} key={d.title + idx}>
-          <CardColumn
-            title={d.title}
-            description={d.description}
-            current={d.current}
-            goal={d.goal}
-            daysLeft={d.daysLeft}
-            src={d.src}
-          />
-        </Grid>
-      ))}
-    </Grid>
-  </section>
-);
+export const SectionCategory = ({ category, data, onClick }) => {
+  return (
+    <section style={{ marginBottom: '20px' }}>
+      <SectionHeader>{category}</SectionHeader>
+      <Grid container spacing={3}>
+        {data.map((d, idx) => (
+          <Grid item xs={4} key={d.title + idx}>
+            <CardColumn
+              title={d.title}
+              description={d.description}
+              current={d.current}
+              goal={d.goal}
+              daysLeft={formatDays(d.deadline)}
+              src={d.image_url}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </section>
+  );
+};
