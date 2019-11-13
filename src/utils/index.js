@@ -10,4 +10,4 @@ export function formatDays(date) {
 }
 
 export const computePercent = (current, goal) =>
-  current >= goal ? 100 : (current / goal) * 100;
+  current >= goal ? 100 : ((current / goal) * 100).toFixed(2);
