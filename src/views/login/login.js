@@ -13,7 +13,7 @@ const Login = () => {
 
       setIsLoggingIn(false);
       localStorage.setItem('access_token', data.access_token);
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       console.error(error);
       setIsLoggingIn(false);
