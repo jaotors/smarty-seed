@@ -119,7 +119,7 @@ const UserBadge = styled(Button)`
   }
 `;
 
-const HeaderMenu = ({ onLogout }) => {
+const HeaderMenu = ({ onLogout, user }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const anchorRef = useRef(null);
   const prevOpen = useRef(menuOpen);
@@ -152,7 +152,7 @@ const HeaderMenu = ({ onLogout }) => {
         onClick={handleToggle}
         ref={anchorRef}
       >
-        {' '}
+        {'Hi! ' + user.first_name}
       </UserBadge>
       <Popper
         open={menuOpen}
@@ -205,7 +205,7 @@ const HeaderInfo = () => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {user && user.email ? (
-        <HeaderMenu onLogout={onLogout} />
+        <HeaderMenu onLogout={onLogout} user={user}/>
       ) : (
         <GetStartedLink href="/login">Get Started</GetStartedLink>
       )}

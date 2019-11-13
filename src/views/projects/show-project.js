@@ -5,6 +5,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as Api from '../../api';
 import AppHeader from '../../components/header';
 import StyledImg from '../../components/image';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   DonateModal,
   ProjectInfo,
@@ -12,10 +15,32 @@ import {
   ShowProjectContainer,
 } from './show-project-styles';
 
+const useStyles = makeStyles({
+  card: {
+    minWidth: 275,
+    maxWith: 300,
+    display: 'inline-block',
+    margin: '20px'
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
+
 const ShowProject = ({ projectId }) => {
   const [user, setUser] = useState(null);
   const [project, setProject] = useState(null);
   const [openDonateModal, setOpenDonateModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const classes = useStyles();
 
   const onShowModal = useCallback(() => {
     if (user !== null) {
@@ -34,7 +59,7 @@ const ShowProject = ({ projectId }) => {
       });
       window.location.replace(data);
     } catch (error) {
-      console.error(error);
+      setErrorMessage(error.errorDetails.error[0])
     }
   };
 
@@ -81,7 +106,26 @@ const ShowProject = ({ projectId }) => {
                 </Grid>
               </Grid>
               <ShowProjDesc description={project.description} />
+                <p
+                style={{
+                  margin: '25px 0 5px',
+                    fontSize: '1rem',
+                    color: '#acacac',
+                }}
+                >
+                  Pledges
+                </p>
+                {project.pledges.
+                 map((p, idx) => (
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <h2>{p.user.first_name + ' ' + p.user.last_name}</h2>
+                      <h4>PHP {p.amount.toFixed(2)}</h4>
+                    </CardContent>
+                  </Card>
+                 ))}
             </section>
+            <p style={{color: "red"}}>{errorMessage}</p>
           </Container>
           <DonateModal
             id={project.id}

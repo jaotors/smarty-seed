@@ -5,6 +5,7 @@ import { navigate } from '@reach/router';
 
 const Login = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("")
 
   const onClick = async params => {
     setIsLoggingIn(true);
@@ -15,14 +16,14 @@ const Login = () => {
       localStorage.setItem('access_token', data.access_token);
       navigate('/');
     } catch (error) {
-      console.error(error);
+      setErrorMessage(error.errorDetails.errors[0])
       setIsLoggingIn(false);
     }
   };
 
   return (
     <LoginBg>
-      <LoginContainer onClick={onClick} disabled={isLoggingIn} />
+      <LoginContainer onClick={onClick} disabled={isLoggingIn} errorMessage={errorMessage} />
     </LoginBg>
   );
 };

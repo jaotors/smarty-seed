@@ -175,7 +175,7 @@ export const DonateModal = ({ id, isOpen, onClose, onClick }) => {
               onClose();
             }}
           >
-            Donate
+            Donate via Unionbank
           </StyledButton>
         </div>
       </div>

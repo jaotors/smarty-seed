@@ -23,7 +23,7 @@ function createClient(
         if (!response.ok) {
           throw new FetchError(response.statusText, {
             status: response.status,
-            ...(await response.json().catch(() => undefined)),
+            errorDetails: (await response.json().catch(() => undefined)),
           });
         }
 

@@ -51,7 +51,7 @@ const LoginBtn = styled(StyledButton)`
   }
 `;
 
-export const LoginContainer = ({ onClick, disabled }) => {
+export const LoginContainer = ({ onClick, disabled, errorMessage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -62,30 +62,31 @@ export const LoginContainer = ({ onClick, disabled }) => {
   return (
     <LoginBlock>
       <LoginBox>
-        <StyledLoginHeader>Smarty Seed</StyledLoginHeader>
-        <TextField
-          label="Email"
-          id="Email"
-          type="email"
-          onChange={e => setEmail(e.target.value)}
-          fullWidth={true}
-        />
-        <TextField
-          style={{ marginTop: '2rem' }}
-          id="password"
-          label="Password"
-          type="password"
-          onChange={e => setPassword(e.target.value)}
-          fullWidth={true}
-        />
-        <LoginButtonContainer>
-          <RegisterBtn disabled={disabled} onClick={onClickLogin}>
-            Register
-          </RegisterBtn>
-          <LoginBtn disabled={disabled} onClick={onClickLogin}>
-            Login
-          </LoginBtn>
-        </LoginButtonContainer>
+          <StyledLoginHeader>Smarty Seed</StyledLoginHeader>
+          <TextField
+            label="Email"
+            id="Email"
+            type="email"
+            onChange={e => setEmail(e.target.value)}
+            fullWidth={true}
+          />
+          <TextField
+            style={{ marginTop: '2rem' }}
+            id="password"
+            label="Password"
+            type="password"
+            onChange={e => setPassword(e.target.value)}
+            fullWidth={true}
+          />
+          <LoginButtonContainer>
+            <RegisterBtn disabled={disabled} onClick={onClickLogin}>
+              Register
+            </RegisterBtn>
+            <LoginBtn disabled={disabled} onClick={onClickLogin}>
+              Login
+            </LoginBtn>
+          </LoginButtonContainer>
+          <p style={{color: "red"}}>{errorMessage}</p>
       </LoginBox>
     </LoginBlock>
   );
