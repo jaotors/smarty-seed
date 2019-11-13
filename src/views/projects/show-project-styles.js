@@ -1,8 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { computePercent, numberWithCommas, formatDays } from '../../utils';
-import ProgressBar from '../../components/progress-bar';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import TextField from '../../components/input';
+import ProgressBar from '../../components/progress-bar';
+import { computePercent, formatDays, numberWithCommas } from '../../utils';
 
 export const ShowProjectContainer = styled.div`
   width: 100%;
@@ -74,7 +78,7 @@ const OtherInfo = styled.div`
   margin-bottom: 10px;
 `;
 
-export const ProjectInfo = ({ project }) => {
+export const ProjectInfo = ({ project, onShowModal }) => {
   const { title, category, current, goal, beneficiary, deadline } = project;
   const percentage = computePercent(current, goal);
 
@@ -106,7 +110,7 @@ export const ProjectInfo = ({ project }) => {
             <span style={{ color: '#acacac' }}>days left</span>
           </div>
         </OtherInfo>
-        <StyledButton>Donate</StyledButton>
+        <StyledButton onClick={onShowModal}>Donate</StyledButton>
       </div>
     </>
   );
@@ -126,3 +130,55 @@ export const ShowProjDesc = ({ description }) => (
     <p style={{ fontSize: '1.1rem', margin: 0 }}>{description}</p>
   </div>
 );
+
+const DonateInput = styled.div`
+  & input {
+    text-align: center;
+    font-size: 2rem;
+  }
+`;
+
+export const DonateModal = ({ id, isOpen, onClose, onClick }) => {
+  const [donateAmount, setDonateAmount] = useState(0);
+  return (
+    <Dialog
+      open={isOpen}
+      maxWidth={'xs'}
+      onClose={onClose}
+      aria-labelledby="donate-modal"
+      fullWidth={true}
+    >
+      <div style={{ padding: '30px' }}>
+        <DialogTitle id="donate-modal-title" style={{ textAlign: 'center' }}>
+          Donate to this Project
+        </DialogTitle>
+        <DialogContent>
+          <DonateInput>
+            <TextField
+              value={donateAmount}
+              onChange={e => setDonateAmount(e.target.value)}
+              autoFocus
+              margin="dense"
+              id="donate-money"
+              type="number"
+              inputProps={{
+                min: 0.01,
+              }}
+            />
+          </DonateInput>
+        </DialogContent>
+        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          <StyledButton
+            style={{ marginTop: 0 }}
+            onClick={async () => {
+              await onClick(id, donateAmount);
+              onClose();
+            }}
+          >
+            Donate
+          </StyledButton>
+        </div>
+      </div>
+    </Dialog>
+  );
+};

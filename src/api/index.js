@@ -24,3 +24,14 @@ export const getProject = async projectId => {
   const data = Request.get(`/projects/${projectId}`);
   return data;
 };
+
+export const redirectToPayments = async (token, query) => {
+  const data = Request.get(`/payments/unionbank`, {
+    query,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return data;
+};

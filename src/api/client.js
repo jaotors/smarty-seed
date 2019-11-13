@@ -1,5 +1,5 @@
-import { FetchError } from './errors';
 import { stringify } from 'qs';
+import { FetchError } from './errors';
 
 function queryString(obj) {
   return stringify(obj, {
