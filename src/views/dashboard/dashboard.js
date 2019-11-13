@@ -5,7 +5,7 @@ import {
   SectionFeaturedProjects,
   SectionCategory,
 } from './dashboard-styles';
-import { getUser, getAllProjects } from '../../api';
+import { getAllProjects } from '../../api';
 import { CardRow } from '../../components/card';
 import AppHeader from '../../components/header';
 import { navigate } from '@reach/router';
@@ -23,30 +23,12 @@ export const categoryMap = data => {
 };
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
   const [projects, setProjects] = useState([]);
   const [categoriesProj, setCategoriesProj] = useState([]);
 
   const onShowProject = projectId => {
-    if (projectId === undefined) return;
-    if (user && user.email) {
-      navigate(`/projects/${projectId}`);
-      return;
-    }
-    navigate('/login');
+    navigate(`/projects/${projectId}`);
   };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        const { data } = await getUser(token);
-        setUser(data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
 
   useEffect(() => {
     (async () => {
@@ -63,7 +45,7 @@ const Dashboard = () => {
 
   return (
     <DashboardContainer>
-      <AppHeader user={user} />
+      <AppHeader />
       <Container style={{ paddingTop: '90px' }}>
         <SectionFeaturedProjects onClick={onShowProject} data={projects[0]}>
           {projects

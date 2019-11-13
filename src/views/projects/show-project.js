@@ -44,9 +44,7 @@ const ShowProject = ({ projectId }) => {
         const token = localStorage.getItem('access_token');
         const { data } = await Api.getUser(token);
         setUser(data);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     })();
   }, []);
 

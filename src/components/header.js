@@ -3,8 +3,17 @@ import Icon from '@material-ui/core/Icon';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import { navigate } from '@reach/router';
+import Grow from '@material-ui/core/Grow';
+import * as Api from '../api';
 
 const HeaderContainer = styled.div`
   position: ${props => (props.fix ? 'fixed' : 'absolute')};
@@ -98,27 +107,116 @@ const GetStartedLink = styled.a`
   }
 `;
 
-const UserBadge = styled.div`
+const UserBadge = styled(Button)`
   width: 60px;
   height: 60px;
   border-radius: 50%;
   background-color: #27ae60;
+  color: #fff;
+
+  &:hover {
+    background-color: #218f50;
+  }
 `;
 
-const HeaderInfo = ({ user }) => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    {user && user.email ? (
-      <UserBadge />
-    ) : (
-      <GetStartedLink href="/login">Get Started</GetStartedLink>
-    )}
-  </div>
-);
+const HeaderMenu = ({ onLogout }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const anchorRef = useRef(null);
+  const prevOpen = useRef(menuOpen);
 
-export default ({ user, onSearch }) => (
+  const handleClose = event => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setMenuOpen(false);
+  };
+
+  const handleToggle = () => {
+    setMenuOpen(state => !state);
+  };
+
+  useEffect(() => {
+    if (prevOpen.current === true && menuOpen === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = menuOpen;
+  }, [menuOpen]);
+
+  return (
+    <div>
+      <UserBadge
+        aria-controls={menuOpen ? 'menu-list-grow' : undefined}
+        aria-haspopup="true"
+        onClick={handleToggle}
+        ref={anchorRef}
+      >
+        {' '}
+      </UserBadge>
+      <Popper
+        open={menuOpen}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === 'bottom' ? 'center top' : 'center bottom',
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList autoFocusItem={menuOpen} id="menu-list-grow">
+                  <MenuItem onClick={onLogout}>Logout</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </div>
+  );
+};
+
+const HeaderInfo = () => {
+  const [user, setUser] = useState(null);
+
+  const onLogout = () => {
+    setUser(null);
+    localStorage.setItem('access_token', '');
+    navigate('/');
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        const { data } = await Api.getUser(token);
+        setUser(data);
+      } catch (error) {}
+    })();
+  }, []);
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      {user && user.email ? (
+        <HeaderMenu onLogout={onLogout} />
+      ) : (
+        <GetStartedLink href="/login">Get Started</GetStartedLink>
+      )}
+    </div>
+  );
+};
+
+export default ({ onSearch }) => (
   <HeaderContainer>
     <HeaderControls />
     <HeaderSearchbar onSearch={onSearch} />
-    <HeaderInfo user={user} />
+    <HeaderInfo />
   </HeaderContainer>
 );
