@@ -5,6 +5,11 @@ export const login = async params => {
   return data;
 };
 
+export const register = async params => {
+  const data = await Request.post('/register', { params });
+  return data;
+};
+
 export const getUser = async token => {
   const data = await Request.get('/user', {
     headers: {

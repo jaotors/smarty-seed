@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     minWidth: 275,
     maxWith: 300,
     display: 'inline-block',
-    margin: '20px'
+    margin: '20px',
   },
   bullet: {
     display: 'inline-block',
@@ -59,7 +59,7 @@ const ShowProject = ({ projectId }) => {
       });
       window.location.replace(data);
     } catch (error) {
-      setErrorMessage(error.errorDetails.error[0])
+      setErrorMessage(error.errorDetails.error[0]);
     }
   };
 
@@ -106,26 +106,25 @@ const ShowProject = ({ projectId }) => {
                 </Grid>
               </Grid>
               <ShowProjDesc description={project.description} />
-                <p
+              <p
                 style={{
                   margin: '25px 0 5px',
-                    fontSize: '1rem',
-                    color: '#acacac',
+                  fontSize: '1rem',
+                  color: '#acacac',
                 }}
-                >
-                  Pledges
-                </p>
-                {project.pledges.
-                 map((p, idx) => (
-                  <Card className={classes.card}>
-                    <CardContent>
-                      <h2>{p.user.first_name + ' ' + p.user.last_name}</h2>
-                      <h4>PHP {p.amount.toFixed(2)}</h4>
-                    </CardContent>
-                  </Card>
-                 ))}
+              >
+                Pledges
+              </p>
+              {project.pledges.map((p, idx) => (
+                <Card key={'card' + idx} className={classes.card}>
+                  <CardContent>
+                    <h2>{p.user.first_name + ' ' + p.user.last_name}</h2>
+                    <h4>PHP {p.amount.toFixed(2)}</h4>
+                  </CardContent>
+                </Card>
+              ))}
             </section>
-            <p style={{color: "red"}}>{errorMessage}</p>
+            <p style={{ color: 'red' }}>{errorMessage}</p>
           </Container>
           <DonateModal
             id={project.id}
