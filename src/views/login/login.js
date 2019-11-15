@@ -29,8 +29,7 @@ const Login = () => {
 
       setIsLoading(false);
       localStorage.setItem('access_token', data.access_token);
-      console.log('data', data);
-      // navigate('/');
+      navigate('/');
     } catch (error) {
       setErrorMessage(error.toString());
       setIsLoading(false);
